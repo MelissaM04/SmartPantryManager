@@ -1,12 +1,17 @@
 package com.example.smartpantrymanager;
 
 import android.os.Bundle;
-
+import android.util.Log;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +24,29 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        testDatabaseConnection();
+    }
+
+    private void testDatabaseConnection() {
+        SupabaseApi api = SupabaseClient.getClient().create(SupabaseApi.class);
+        Call<List<Object>> call = api.getPantryItems();
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Object>> call, @NonNull Response<List<Object>> response) {
+                if (response.isSuccessful()) {
+                    Log.d("SUPABASE_TEST", "SUCCESS! Connected to Supabase. Data: " + response.body());
+                } else {
+                    Log.e("SUPABASE_TEST", "Connected, but got an error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Object>> call, @NonNull Throwable t) {
+                Log.e("SUPABASE_TEST", "FAILED to connect! Error: " + t.getMessage());
+            }
         });
     }
 }
