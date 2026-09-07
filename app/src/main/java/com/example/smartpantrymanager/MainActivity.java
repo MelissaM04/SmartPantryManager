@@ -31,11 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void testDatabaseConnection() {
         SupabaseApi api = SupabaseClient.getClient().create(SupabaseApi.class);
-        Call<List<Object>> call = api.getPantryItems();
+
+        // Updated to use PantryItem instead of Object
+        Call<List<PantryItem>> call = api.getPantryItems();
 
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<List<Object>> call, @NonNull Response<List<Object>> response) {
+            public void onResponse(@NonNull Call<List<PantryItem>> call, @NonNull Response<List<PantryItem>> response) {
                 if (response.isSuccessful()) {
                     Log.d("SUPABASE_TEST", "SUCCESS! Connected to Supabase. Data: " + response.body());
                 } else {
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Object>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<PantryItem>> call, @NonNull Throwable t) {
                 Log.e("SUPABASE_TEST", "FAILED to connect! Error: " + t.getMessage());
             }
         });

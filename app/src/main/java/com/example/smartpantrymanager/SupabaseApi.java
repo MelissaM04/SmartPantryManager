@@ -1,10 +1,15 @@
 package com.example.smartpantrymanager;
 
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import java.util.List;
 
 public interface SupabaseApi {
+
     @GET("pantry_items?select=*")
-    Call<List<Object>> getPantryItems();
+    Call<List<PantryItem>> getPantryItems();
+
+    @GET("recipes?select=*")
+    Call<List<Recipe>> getRecipes();
+
 }
