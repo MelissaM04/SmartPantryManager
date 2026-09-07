@@ -12,8 +12,16 @@ import java.util.List;
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
     private List<PantryItem> pantryList = new ArrayList<>();
+    private final OnItemClickListener listener;
 
-    //Takes database list and updates screen
+    public interface OnItemClickListener {
+        void onItemClick(PantryItem item);
+    }
+
+    public PantryAdapter(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public void setPantryItems(List<PantryItem> items) {
         this.pantryList = items;
         notifyDataSetChanged();
@@ -22,7 +30,6 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     @NonNull
     @Override
     public PantryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //Gets item_pantry.xml layout
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_pantry, parent, false);
         return new PantryViewHolder(view);
@@ -30,11 +37,11 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
 
     @Override
     public void onBindViewHolder(@NonNull PantryViewHolder holder, int position) {
-        //Adds database data into text fields for each row
         PantryItem currentItem = pantryList.get(position);
         holder.tvName.setText(currentItem.getName());
         holder.tvQuantity.setText(String.valueOf(currentItem.getQuantity()));
         holder.tvUnit.setText(currentItem.getUnit());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(currentItem));
     }
 
     @Override
@@ -42,7 +49,6 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return pantryList.size();
     }
 
-    //Connects Java code to XML IDs
     static class PantryViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvQuantity, tvUnit;
 

@@ -41,7 +41,16 @@ public class MainActivity extends AppCompatActivity {
         rvPantryList.setLayoutManager(new LinearLayoutManager(this));
 
         //Attach Adapter
-        adapter = new PantryAdapter();
+        adapter = new PantryAdapter(item -> {
+            android.content.Intent intent = new android.content.Intent(MainActivity.this, IngredientDetailActivity.class);
+            // Package the tapped ingredient's data to send to the detail screen
+            intent.putExtra("ITEM_ID", item.getId());
+            intent.putExtra("ITEM_NAME", item.getName());
+            intent.putExtra("ITEM_QUANTITY", item.getQuantity());
+            intent.putExtra("ITEM_UNIT", item.getUnit());
+            intent.putExtra("ITEM_EXPIRY", item.getExpiryDate());
+            startActivity(intent);
+        });
         rvPantryList.setAdapter(adapter);
 
         //Set click listener
