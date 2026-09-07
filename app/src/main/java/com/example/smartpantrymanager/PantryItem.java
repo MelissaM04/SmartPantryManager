@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class PantryItem {
     @SerializedName("id")
-    private int id;
+    private Integer id;
 
     @SerializedName("name")
     private String name;
@@ -23,4 +23,10 @@ public class PantryItem {
     public double getQuantity() { return quantity; }
     public String getUnit() { return unit; }
     public String getExpiryDate() { return expiryDate; }
+
+    //Setters
+    public void setName(String name) { this.name = name; }
+    public void setQuantity(double quantity) { this.quantity = quantity; }
+    public void setUnit(String unit) { this.unit = unit; }
+    public void setExpiryDate(String expiryDate) { this.expiryDate = expiryDate; }
 }

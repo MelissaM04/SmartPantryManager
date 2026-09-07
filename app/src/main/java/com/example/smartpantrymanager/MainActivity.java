@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
         loadPantryData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPantryData();
+    }
+
     private void loadPantryData() {
         SupabaseApi api = SupabaseClient.getClient().create(SupabaseApi.class);
         Call<List<PantryItem>> call = api.getPantryItems();
