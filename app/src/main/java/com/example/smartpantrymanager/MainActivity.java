@@ -44,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PantryAdapter();
         rvPantryList.setAdapter(adapter);
 
+        //Set click listener
+        com.google.android.material.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
+        fab.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(MainActivity.this, AddIngredientActivity.class);
+            startActivity(intent);
+        });
+
         //Get data from Supabase
         loadPantryData();
     }
