@@ -60,6 +60,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Initialize Bottom Navigation
+        com.google.android.material.bottomnavigation.BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+
+        // Highlight Pantry
+        bottomNavigationView.setSelectedItemId(R.id.nav_pantry);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_pantry) {
+                return true;
+            } else if (itemId == R.id.nav_recipes) {
+                startActivity(new android.content.Intent(MainActivity.this, SuggestedRecipesActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_settings) {
+                startActivity(new android.content.Intent(MainActivity.this, SettingsActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+                return true;
+            }
+            return false;
+        });
+
         //Get data from Supabase
         loadPantryData();
     }

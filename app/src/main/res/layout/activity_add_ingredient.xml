@@ -45,26 +45,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
 
         <Button
             android:id="@+id/btnCancel"
             style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Cancel"
-            app:cornerRadius="30dp" />
+            android:textColor="#0a4160"
+            app:strokeColor="#0a4160"
+            android:layout_marginEnd="8dp"
+            app:cornerRadius="20dp" />
 
         <Button
             android:id="@+id/btnSaveIngredient"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Save"
-            app:cornerRadius="30dp" />
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0a4160"
+            android:layout_marginStart="8dp"
+            app:cornerRadius="20dp" />
 
     </LinearLayout>
 

@@ -22,4 +22,7 @@ public interface SupabaseApi {
 
     @DELETE("pantry_items")
     Call<Void> deletePantryItem(@Query("id") String idQuery);
+
+    @GET("recipes?select=*")
+    Call<List<Recipe>> getRecipes();
 }
