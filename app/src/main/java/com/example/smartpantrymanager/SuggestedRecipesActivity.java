@@ -79,14 +79,39 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         fetchPantryInventory();
     }
 
-    //Helper method to keep adapter creation clean
+    // Helper method to keep adapter creation clean
     private RecipeAdapter createAdapter() {
         return new RecipeAdapter(recipe -> {
             android.content.Intent intent = new android.content.Intent(SuggestedRecipesActivity.this, RecipeDetailActivity.class);
             intent.putExtra("RECIPE_NAME", recipe.getName());
-            String ingredientsStr = android.text.TextUtils.join("\n• ", recipe.getRequiredIngredients());
+
+            List<String> formattedIngredients = new ArrayList<>();
+            for (String req : recipe.getRequiredIngredients()) {
+                String[] parts = req.split("\\|");
+                if (parts.length == 3) {
+                    formattedIngredients.add(parts[0] + " (" + parts[1] + " " + parts[2] + ")");
+                } else {
+                    formattedIngredients.add(req); // Fallback just in case you forgot a pipe in Supabase
+                }
+            }
+            String ingredientsStr = android.text.TextUtils.join("\n• ", formattedIngredients);
             intent.putExtra("RECIPE_INGREDIENTS", "• " + ingredientsStr);
             intent.putExtra("RECIPE_METHOD", recipe.getPreparationSteps());
+
+            String missingIngredient = "";
+            for (String req : recipe.getRequiredIngredients()) {
+                if (!isIngredientInPantry(req)) {
+                    String[] parts = req.split("\\|");
+                    if (parts.length == 3) {
+                        missingIngredient = parts[0] + " (" + parts[1] + " " + parts[2] + ")";
+                    } else {
+                        missingIngredient = req;
+                    }
+                    break;
+                }
+            }
+            intent.putExtra("MISSING_INGREDIENT", missingIngredient);
+
             startActivity(intent);
         });
     }
@@ -168,9 +193,20 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     }
 
     private boolean isIngredientInPantry(String required) {
-        String reqStr = required.toLowerCase().trim();
-        if (reqStr.endsWith("es")) reqStr = reqStr.substring(0, reqStr.length() - 2);
-        else if (reqStr.endsWith("s")) reqStr = reqStr.substring(0, reqStr.length() - 1);
+        String[] parts = required.split("\\|");
+        String reqName = parts[0].toLowerCase().trim();
+        double reqQty = 0.0;
+
+        if (parts.length >= 2) {
+            try {
+                reqQty = Double.parseDouble(parts[1].trim());
+            } catch (Exception e) {
+                reqQty = 0.0;
+            }
+        }
+
+        if (reqName.endsWith("es")) reqName = reqName.substring(0, reqName.length() - 2);
+        else if (reqName.endsWith("s")) reqName = reqName.substring(0, reqName.length() - 1);
 
         for (PantryItem item : currentPantry) {
             if (item.getName() == null) continue;
@@ -179,8 +215,13 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
             if (pantryStr.endsWith("es")) pantryStr = pantryStr.substring(0, pantryStr.length() - 2);
             else if (pantryStr.endsWith("s")) pantryStr = pantryStr.substring(0, pantryStr.length() - 1);
 
-            if (pantryStr.contains(reqStr) || reqStr.contains(pantryStr)) {
-                return true;
+            if (pantryStr.contains(reqName) || reqName.contains(pantryStr)) {
+
+                if (item.getQuantity() >= reqQty) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
         return false;

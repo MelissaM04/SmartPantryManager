@@ -20,7 +20,8 @@
         android:textColor="#0a4160"
         android:layout_marginBottom="12dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Scrolling list that holds ingredients -->
     <androidx.recyclerview.widget.RecyclerView

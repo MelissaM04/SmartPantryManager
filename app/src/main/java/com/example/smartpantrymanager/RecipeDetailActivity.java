@@ -33,6 +33,21 @@ public class RecipeDetailActivity extends AppCompatActivity {
         tvIngredients.setText(intent.getStringExtra("RECIPE_INGREDIENTS"));
         tvMethod.setText(intent.getStringExtra("RECIPE_METHOD"));
 
+        //Almost There missing ingredient display
+        TextView tvMissingTitle = findViewById(R.id.tvMissingTitle);
+        TextView tvMissingIngredient = findViewById(R.id.tvDetailMissingIngredient);
+        String missing = intent.getStringExtra("MISSING_INGREDIENT");
+
+        if (missing != null && !missing.isEmpty()) {
+            tvMissingTitle.setVisibility(android.view.View.VISIBLE);
+            tvMissingIngredient.setVisibility(android.view.View.VISIBLE);
+            tvMissingIngredient.setText("• " + missing);
+        }
+
+        //Back Button
+        com.google.android.material.floatingactionbutton.FloatingActionButton fabBack = findViewById(R.id.fabBack);
+        fabBack.setOnClickListener(v -> finish());
+
         //Bottom Navigation
         com.google.android.material.bottomnavigation.BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_recipes);

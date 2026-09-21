@@ -28,6 +28,26 @@
                 android:layout_marginBottom="24dp"/>
 
             <TextView
+                android:id="@+id/tvMissingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Missing Ingredient to Buy:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#D32F2F"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvDetailMissingIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:visibility="gone"
+                android:layout_marginBottom="32dp"/>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Required Ingredients:"
@@ -64,6 +84,20 @@
                 android:layout_marginBottom="32dp"/>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Floating Back Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomNavigation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Back"
+        android:src="@android:drawable/ic_menu_revert"
+        app:backgroundTint="#0a4160"
+        app:tint="#FFFFFF" />
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

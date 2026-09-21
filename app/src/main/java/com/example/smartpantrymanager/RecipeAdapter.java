@@ -1,6 +1,5 @@
 package com.example.smartpantrymanager;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,15 +37,24 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe currentRecipe = recipeList.get(position);
-        holder.tvName.setText(currentRecipe.getName());
+        Recipe recipe = recipeList.get(position);
+        holder.tvName.setText(recipe.getName());
 
-        if (currentRecipe.getRequiredIngredients() != null) {
-            String ingredientsList = TextUtils.join(", ", currentRecipe.getRequiredIngredients());
-            holder.tvIngredients.setText("Requires: " + ingredientsList);
+        //Format ingredients to remove pipes for preview list
+        java.util.List<String> formattedPreview = new java.util.ArrayList<>();
+        for (String req : recipe.getRequiredIngredients()) {
+            String[] parts = req.split("\\|");
+            if (parts.length == 3) {
+                formattedPreview.add(parts[0] + " (" + parts[1] + " " + parts[2] + ")");
+            } else {
+                formattedPreview.add(req);
+            }
         }
 
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(currentRecipe));
+        String previewText = "Requires: " + android.text.TextUtils.join(", ", formattedPreview);
+
+        holder.tvIngredients.setText(previewText);
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(recipe));
     }
 
     @Override
